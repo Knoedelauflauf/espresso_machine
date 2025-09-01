@@ -35,7 +35,7 @@ class XeniaPowerSwitch(CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEnti
                 (XENIA_DOMAIN, self.coordinator.config_entry.data[CONF_HOST])
             },
             "name": "Xenia Espresso Machine",
-            "manufacturer": "Xenia",
+            "manufacturer": "Xenia Espresso GmbH",
             "model": "DBL",
         }
 
