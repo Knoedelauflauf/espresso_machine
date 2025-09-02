@@ -182,5 +182,4 @@ class Xenia:
         async with self._session.post(
             url, data=data, headers=headers, timeout=5
         ) as resp:
-            _LOGGER.warning(f"{resp}")
             resp.raise_for_status()
