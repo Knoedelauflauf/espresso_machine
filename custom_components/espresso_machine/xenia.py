@@ -136,8 +136,11 @@ class Xenia:
             return False
         return False
 
-    async def machine_turn_on(self):
-        await self._control_machine(MachineControl.ON)
+    async def machine_turn_on(self, sb_on: bool = True):
+        if sb_on:
+            await self._control_machine(MachineControl.ON)
+        else:
+            await self._control_machine(MachineControl.ON_SB_OFF)
 
     async def machine_turn_off(self):
         await self._control_machine(MachineControl.OFF)
