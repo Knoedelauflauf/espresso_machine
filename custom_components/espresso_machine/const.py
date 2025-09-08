@@ -1,7 +1,7 @@
 from enum import Enum
 
 XENIA_DOMAIN = "espresso_machine"
-PLATFORMS = ["select", "sensor", "switch", "number"]
+PLATFORMS = ["number", "select", "sensor", "switch"]
 DEFAULT_HOST = "xenia.local"
 
 CONF_POWER_ON_BEHAVIOR = "power_on_behavior"
