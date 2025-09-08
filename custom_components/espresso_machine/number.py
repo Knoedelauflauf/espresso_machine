@@ -47,8 +47,8 @@ NUMBER_TYPES: Final[tuple[XeniaNumberEntityDescription, ...]] = (
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda data: data.overview_single.bg_set_temp,
         set_fn=lambda coordinator, v: coordinator.xenia.set_bg_set_temp(v),
-        native_min_value=80.0,
-        native_max_value=105.0,
+        native_min_value=60,
+        native_max_value=96,
         native_step=0.5,
     ),
     XeniaNumberEntityDescription(
@@ -59,8 +59,8 @@ NUMBER_TYPES: Final[tuple[XeniaNumberEntityDescription, ...]] = (
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda data: data.overview_single.bb_set_temp,
         set_fn=lambda coordinator, v: coordinator.xenia.set_bb_set_temp(v),
-        native_min_value=80.0,
-        native_max_value=105.0,
+        native_min_value=60,
+        native_max_value=96,
         native_step=0.5,
     ),
 )
