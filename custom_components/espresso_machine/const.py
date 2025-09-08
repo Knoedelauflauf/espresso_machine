@@ -1,4 +1,4 @@
-from typing import Literal
+from enum import Enum
 
 XENIA_DOMAIN = "espresso_machine"
 PLATFORMS = ["select", "sensor", "switch"]
@@ -6,14 +6,13 @@ DEFAULT_HOST = "xenia.local"
 
 CONF_POWER_ON_BEHAVIOR = "power_on_behavior"
 
-PowerOnBehavior = Literal["steam_on", "steam_off"]
 
-POWER_ON_BEHAVIOR_STEAM_ON: PowerOnBehavior = "steam_on"
-POWER_ON_BEHAVIOR_STEAM_OFF: PowerOnBehavior = "steam_off"
+class PowerOnBehavior(str, Enum):
+    STEAM_ON = "steam_on"
+    STEAM_OFF = "steam_off"
+    # REMEMBER_LAST = "remember_last"
 
-POWER_ON_BEHAVIOR_OPTIONS: list[PowerOnBehavior] = [
-    POWER_ON_BEHAVIOR_STEAM_ON,
-    POWER_ON_BEHAVIOR_STEAM_OFF,
-]
 
-DEFAULT_POWER_ON_BEHAVIOR: PowerOnBehavior = POWER_ON_BEHAVIOR_STEAM_ON
+POWER_ON_BEHAVIOR_OPTIONS: list[PowerOnBehavior] = [e.value for e in PowerOnBehavior]
+
+DEFAULT_POWER_ON_BEHAVIOR = PowerOnBehavior.STEAM_OFF

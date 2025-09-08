@@ -8,9 +8,8 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import (
     CONF_POWER_ON_BEHAVIOR,
     DEFAULT_POWER_ON_BEHAVIOR,
-    POWER_ON_BEHAVIOR_STEAM_OFF,
-    POWER_ON_BEHAVIOR_STEAM_ON,
     XENIA_DOMAIN,
+    PowerOnBehavior,
 )
 from .coordinator import XeniaConfigEntry, XeniaDataUpdateCoordinator
 from .xenia import MachineStatus, SteamBoilerStatus
@@ -58,16 +57,14 @@ class XeniaPowerSwitch(CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEnti
         behavior = self.coordinator.config_entry.options.get(
             CONF_POWER_ON_BEHAVIOR, DEFAULT_POWER_ON_BEHAVIOR
         )
-        if behavior == POWER_ON_BEHAVIOR_STEAM_ON:
+        if behavior == PowerOnBehavior.STEAM_ON:
             await self.coordinator.xenia.machine_turn_on()
-        elif behavior == POWER_ON_BEHAVIOR_STEAM_OFF:
+        elif behavior == PowerOnBehavior.STEAM_OFF:
             await self.coordinator.xenia.machine_turn_on(False)
-        await asyncio.sleep(0.5)
         await self.coordinator.async_request_refresh()
 
     async def async_turn_off(self, **kwargs):
         await self.coordinator.xenia.machine_turn_off()
-        await asyncio.sleep(0.5)
         await self.coordinator.async_request_refresh()
 
 
