@@ -183,3 +183,29 @@ class Xenia:
             url, data=data, headers=headers, timeout=5
         ) as resp:
             resp.raise_for_status()
+
+    async def _inc_dec(self, value: float) -> dict:
+        url = f"http://{self._host}/api/v2/inc_dec"
+        data = f'{{"BG_SET_TEMP":"{value}", "BB_SET_TEMP":"{value}"}}'
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        async with self._session.post(
+            url, data=data, headers=headers, timeout=5
+        ) as resp:
+            resp.raise_for_status()
+            return await resp.json()
+
+    async def _inc_dec_bb(self, value: float) -> dict:
+        url = f"http://{self._host}/api/v2/inc_dec_bb"
+        data = f'{{"BB_SET_TEMP":"{value}"}}'
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        async with self._session.post(
+            url, data=data, headers=headers, timeout=5
+        ) as resp:
+            resp.raise_for_status()
+            return await resp.json()
+
+    async def set_bg_set_temp(self, value: float) -> None:
+        await self._inc_dec(value)
+
+    async def set_bb_set_temp(self, value: float) -> None:
+        await self._inc_dec_bb(value)
