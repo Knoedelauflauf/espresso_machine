@@ -21,9 +21,10 @@ async def async_setup_entry(
     coordinator = entry.runtime_data
 
     power_switch = XeniaPowerSwitch(coordinator, entry)
+    eco_switch = XeniaEcoSwitch(coordinator, entry)
     steam_boiler_switch = XeniaSteamBoilerSwitch(coordinator, entry)
 
-    async_add_entities([power_switch, steam_boiler_switch], True)
+    async_add_entities([power_switch, eco_switch, steam_boiler_switch], True)
 
 
 class XeniaPowerSwitch(CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEntity):
@@ -32,6 +33,7 @@ class XeniaPowerSwitch(CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEnti
         self._entry_id = entry.entry_id
         self._attr_name = "Xenia Power"
         self._attr_unique_id = f"{XENIA_DOMAIN}_xenia_power_{self.coordinator.config_entry.data[CONF_HOST]}"
+        self._attr_icon = "mdi:coffee-maker"
 
     @property
     def device_info(self):
@@ -68,6 +70,55 @@ class XeniaPowerSwitch(CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEnti
         await self.coordinator.async_request_refresh()
 
 
+class XeniaEcoSwitch(CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEntity):
+    def __init__(self, coordinator, entry):
+        super().__init__(coordinator)
+        self._entry_id = entry.entry_id
+        self._attr_name = "ECO Mode"
+        self._attr_unique_id = f"{XENIA_DOMAIN}_eco_mode_{self.coordinator.config_entry.data[CONF_HOST]}"
+        self._attr_icon = "mdi:sprout"
+
+    @property
+    def device_info(self):
+        return {
+            "identifiers": {
+                (XENIA_DOMAIN, self.coordinator.config_entry.data[CONF_HOST])
+            },
+            "name": "Xenia Espresso Machine",
+            "manufacturer": "Xenia Espresso GmbH",
+            "model": "DBL",
+        }
+
+    @property
+    def available(self) -> bool:
+        return self.coordinator.data.overview.ma_status in [
+            MachineStatus.ON,
+            MachineStatus.BREWING,
+            MachineStatus.DRAINING,
+            MachineStatus.ECO,
+        ]
+
+    @property
+    def is_on(self):
+        return self.coordinator.data.overview.ma_status == MachineStatus.ECO
+
+    async def async_turn_on(self, **kwargs):
+        await self.coordinator.xenia.machine_set_eco()
+        await asyncio.sleep(1)
+        await self.coordinator.async_request_refresh()
+
+    async def async_turn_off(self, **kwargs):
+        behavior = self.coordinator.config_entry.options.get(
+            CONF_POWER_ON_BEHAVIOR, DEFAULT_POWER_ON_BEHAVIOR
+        )
+        if behavior == PowerOnBehavior.STEAM_ON:
+            await self.coordinator.xenia.machine_turn_on()
+        elif behavior == PowerOnBehavior.STEAM_OFF:
+            await self.coordinator.xenia.machine_turn_on(False)
+        await asyncio.sleep(1)
+        await self.coordinator.async_request_refresh()
+
+
 class XeniaSteamBoilerSwitch(
     CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEntity
 ):
@@ -76,6 +127,7 @@ class XeniaSteamBoilerSwitch(
         self._entry_id = entry.entry_id
         self._attr_name = "Steam Boiler Power"
         self._attr_unique_id = f"{XENIA_DOMAIN}_steam_boiler_power_{self.coordinator.config_entry.data[CONF_HOST]}"
+        self._attr_icon = "mdi:kettle-steam"
 
     @property
     def device_info(self):

@@ -15,6 +15,7 @@ from homeassistant.const import (
     UnitOfEnergy,
     UnitOfPressure,
     UnitOfTemperature,
+    UnitOfTime,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -50,6 +51,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:thermometer",
         value_fn=lambda data: data.overview.bg_sens_temp_a,
     ),
     XeniaSensorEntityDescription(
@@ -58,6 +60,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:thermometer-water",
         value_fn=lambda data: data.overview.bb_sens_temp_a,
     ),
     XeniaSensorEntityDescription(
@@ -66,6 +69,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
         native_unit_of_measurement=UnitOfPressure.BAR,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:gauge",
         value_fn=lambda data: data.overview.pu_sens_press,
     ),
     XeniaSensorEntityDescription(
@@ -74,6 +78,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
         native_unit_of_measurement=UnitOfPressure.BAR,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:gauge-full",
         value_fn=lambda data: data.overview.sb_sens_press,
     ),
     XeniaSensorEntityDescription(
@@ -81,6 +86,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
         native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
         device_class=SensorDeviceClass.CURRENT,
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:current-ac",
         value_fn=lambda data: data.overview.ma_cur_pwr,
     ),
     XeniaSensorEntityDescription(
@@ -88,23 +94,24 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
+        icon="mdi:lightning-bolt",
         value_fn=lambda data: data.overview.ma_energy_total_kwh,
     ),
     XeniaSensorEntityDescription(
-        key="brew_group_set_temperature",
-        name="Brewgroup Set Temperature",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.overview_single.bg_set_temp,
+        key="extractions",
+        name="Extractions",
+        state_class=SensorStateClass.TOTAL_INCREASING,
+        icon="mdi:coffee-to-go",
+        value_fn=lambda data: data.overview.ma_extractions,
     ),
     XeniaSensorEntityDescription(
-        key="brew_boiler_set_temperature",
-        name="Breboiler Set Temperature",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.overview_single.bb_set_temp,
+        key="operating_hours",
+        name="Operating Hours",
+        native_unit_of_measurement=UnitOfTime.HOURS,
+        device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+        icon="mdi:clock-outline",
+        value_fn=lambda data: data.overview.ma_operating_hours,
     ),
 )
 
