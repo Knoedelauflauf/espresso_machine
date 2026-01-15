@@ -13,14 +13,13 @@ from homeassistant.const import CONF_HOST, EntityCategory, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import XENIA_DOMAIN
 from .coordinator import (
     XeniaConfigEntry,
     XeniaCoordinatorData,
     XeniaDataUpdateCoordinator,
 )
+from .entity import XeniaEntity
 
 
 @dataclass(frozen=True)
@@ -77,14 +76,13 @@ async def async_setup_entry(
     )
 
 
-class XeniaNumber(CoordinatorEntity[XeniaDataUpdateCoordinator], NumberEntity):
+class XeniaNumber(XeniaEntity, NumberEntity):
     def __init__(
         self,
         coordinator: XeniaDataUpdateCoordinator,
         entity_description: XeniaNumberEntityDescription,
-    ):
+    ) -> None:
         super().__init__(coordinator)
-        self._attr_has_entity_name = True
         self.entity_description = entity_description
         self._attr_unique_id = (
             f"{self.coordinator.config_entry.data[CONF_HOST]}_{entity_description.key}"
@@ -92,17 +90,6 @@ class XeniaNumber(CoordinatorEntity[XeniaDataUpdateCoordinator], NumberEntity):
         self._attr_native_min_value = entity_description.native_min_value
         self._attr_native_max_value = entity_description.native_max_value
         self._attr_native_step = entity_description.native_step
-
-    @property
-    def device_info(self):
-        return {
-            "identifiers": {
-                (XENIA_DOMAIN, self.coordinator.config_entry.data[CONF_HOST])
-            },
-            "name": "Xenia Espresso Machine",
-            "manufacturer": "Xenia Espresso GmbH",
-            "model": "DBL",
-        }
 
     @property
     def native_value(self) -> StateType:

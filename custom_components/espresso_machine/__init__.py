@@ -10,7 +10,7 @@ from .coordinator import XeniaDataUpdateCoordinator
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     host = entry.data[CONF_HOST]
     session = async_get_clientsession(hass)
-    coordinator = XeniaDataUpdateCoordinator(hass, entry.entry_id, host, session)
+    coordinator = XeniaDataUpdateCoordinator(hass, entry, host, session)
     await coordinator.async_config_entry_first_refresh()
     entry.runtime_data = coordinator
 

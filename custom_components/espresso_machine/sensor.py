@@ -20,14 +20,13 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import XENIA_DOMAIN
 from .coordinator import (
     XeniaConfigEntry,
     XeniaCoordinatorData,
     XeniaDataUpdateCoordinator,
 )
+from .entity import XeniaEntity
 
 
 @dataclass(frozen=True)
@@ -127,29 +126,17 @@ async def async_setup_entry(
     )
 
 
-class XeniaSensor(CoordinatorEntity[XeniaDataUpdateCoordinator], SensorEntity):
+class XeniaSensor(XeniaEntity, SensorEntity):
     def __init__(
         self,
         coordinator: XeniaDataUpdateCoordinator,
         entity_description: XeniaSensorEntityDescription,
-    ):
+    ) -> None:
         super().__init__(coordinator)
-        self._attr_has_entity_name = True
         self.entity_description = entity_description
         self._attr_unique_id = (
             f"{self.coordinator.config_entry.data[CONF_HOST]}_{entity_description.key}"
         )
-
-    @property
-    def device_info(self):
-        return {
-            "identifiers": {
-                (XENIA_DOMAIN, self.coordinator.config_entry.data[CONF_HOST])
-            },
-            "name": "Xenia Espresso Machine",
-            "manufacturer": "Xenia Espresso GmbH",
-            "model": "DBL",
-        }
 
     @property
     def native_value(self) -> StateType:

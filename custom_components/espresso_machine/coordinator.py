@@ -9,7 +9,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .xenia import MachineStatus, Xenia, XeniaOverviewData, XeniaOverviewSingleData
+from .xenia import Xenia, XeniaOverviewData, XeniaOverviewSingleData
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -28,14 +28,19 @@ class XeniaDataUpdateCoordinator(DataUpdateCoordinator[XeniaCoordinatorData]):
     """Xenia device data update coordinator."""
 
     def __init__(
-        self, hass: HomeAssistant, name, host: str, session: ClientSession
+        self,
+        hass: HomeAssistant,
+        config_entry: ConfigEntry,
+        host: str,
+        session: ClientSession,
     ) -> None:
         """Initialize the Xenia device coordinator."""
         super().__init__(
             hass,
             _LOGGER,
-            name=name,
+            name=config_entry.entry_id,
             update_interval=timedelta(seconds=30),
+            config_entry=config_entry,
         )
         self.data = XeniaCoordinatorData(
             XeniaOverviewData.from_dict({}), XeniaOverviewSingleData.from_dict({})

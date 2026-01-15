@@ -2,7 +2,6 @@ from homeassistant.components.select import SelectEntity
 from homeassistant.const import CONF_HOST
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
     CONF_POWER_ON_BEHAVIOR,
@@ -11,8 +10,7 @@ from .const import (
     XENIA_DOMAIN,
 )
 from .coordinator import XeniaConfigEntry, XeniaDataUpdateCoordinator
-
-DEFAULT_NAME = "Power on Behavior Select"
+from .entity import XeniaEntity
 
 
 async def async_setup_entry(
@@ -22,29 +20,15 @@ async def async_setup_entry(
     async_add_entities([PowerOnBehaviorSelect(coordinator, entry)])
 
 
-class PowerOnBehaviorSelect(
-    CoordinatorEntity[XeniaDataUpdateCoordinator], SelectEntity
-):
-    _default_name = DEFAULT_NAME
+class PowerOnBehaviorSelect(XeniaEntity, SelectEntity):
     _attr_entity_category = EntityCategory.CONFIG
 
-    def __init__(self, coordinator, entry):
+    def __init__(self, coordinator, entry) -> None:
         super().__init__(coordinator)
         self._entry_id = entry.entry_id
         self._attr_name = "Xenia Power on Behavior"
         self._attr_unique_id = f"{XENIA_DOMAIN}_xenia_power_on_behavior_{self.coordinator.config_entry.data[CONF_HOST]}"
         self._attr_options = POWER_ON_BEHAVIOR_OPTIONS
-
-    @property
-    def device_info(self):
-        return {
-            "identifiers": {
-                (XENIA_DOMAIN, self.coordinator.config_entry.data[CONF_HOST])
-            },
-            "name": "Xenia Espresso Machine",
-            "manufacturer": "Xenia Espresso GmbH",
-            "model": "DBL",
-        }
 
     @property
     def current_option(self) -> str:

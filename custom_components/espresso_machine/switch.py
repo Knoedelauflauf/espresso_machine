@@ -3,7 +3,6 @@ import asyncio
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.const import CONF_HOST
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
     CONF_POWER_ON_BEHAVIOR,
@@ -12,6 +11,7 @@ from .const import (
     PowerOnBehavior,
 )
 from .coordinator import XeniaConfigEntry, XeniaDataUpdateCoordinator
+from .entity import XeniaEntity
 from .xenia import MachineStatus, SteamBoilerStatus
 
 
@@ -27,24 +27,13 @@ async def async_setup_entry(
     async_add_entities([power_switch, eco_switch, steam_boiler_switch], True)
 
 
-class XeniaPowerSwitch(CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEntity):
-    def __init__(self, coordinator, entry):
+class XeniaPowerSwitch(XeniaEntity, SwitchEntity):
+    def __init__(self, coordinator, entry) -> None:
         super().__init__(coordinator)
         self._entry_id = entry.entry_id
         self._attr_name = "Xenia Power"
         self._attr_unique_id = f"{XENIA_DOMAIN}_xenia_power_{self.coordinator.config_entry.data[CONF_HOST]}"
         self._attr_icon = "mdi:coffee-maker"
-
-    @property
-    def device_info(self):
-        return {
-            "identifiers": {
-                (XENIA_DOMAIN, self.coordinator.config_entry.data[CONF_HOST])
-            },
-            "name": "Xenia Espresso Machine",
-            "manufacturer": "Xenia Espresso GmbH",
-            "model": "DBL",
-        }
 
     @property
     def is_on(self):
@@ -70,24 +59,13 @@ class XeniaPowerSwitch(CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEnti
         await self.coordinator.async_request_refresh()
 
 
-class XeniaEcoSwitch(CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEntity):
-    def __init__(self, coordinator, entry):
+class XeniaEcoSwitch(XeniaEntity, SwitchEntity):
+    def __init__(self, coordinator, entry) -> None:
         super().__init__(coordinator)
         self._entry_id = entry.entry_id
         self._attr_name = "ECO Mode"
         self._attr_unique_id = f"{XENIA_DOMAIN}_eco_mode_{self.coordinator.config_entry.data[CONF_HOST]}"
         self._attr_icon = "mdi:sprout"
-
-    @property
-    def device_info(self):
-        return {
-            "identifiers": {
-                (XENIA_DOMAIN, self.coordinator.config_entry.data[CONF_HOST])
-            },
-            "name": "Xenia Espresso Machine",
-            "manufacturer": "Xenia Espresso GmbH",
-            "model": "DBL",
-        }
 
     @property
     def available(self) -> bool:
@@ -119,26 +97,13 @@ class XeniaEcoSwitch(CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEntity
         await self.coordinator.async_request_refresh()
 
 
-class XeniaSteamBoilerSwitch(
-    CoordinatorEntity[XeniaDataUpdateCoordinator], SwitchEntity
-):
-    def __init__(self, coordinator, entry):
+class XeniaSteamBoilerSwitch(XeniaEntity, SwitchEntity):
+    def __init__(self, coordinator, entry) -> None:
         super().__init__(coordinator)
         self._entry_id = entry.entry_id
         self._attr_name = "Steam Boiler Power"
         self._attr_unique_id = f"{XENIA_DOMAIN}_steam_boiler_power_{self.coordinator.config_entry.data[CONF_HOST]}"
         self._attr_icon = "mdi:kettle-steam"
-
-    @property
-    def device_info(self):
-        return {
-            "identifiers": {
-                (XENIA_DOMAIN, self.coordinator.config_entry.data[CONF_HOST])
-            },
-            "name": "Xenia Espresso Machine",
-            "manufacturer": "Xenia Espresso GmbH",
-            "model": "DBL",
-        }
 
     @property
     def available(self) -> bool:
