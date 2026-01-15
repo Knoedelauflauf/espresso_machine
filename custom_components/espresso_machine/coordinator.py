@@ -39,7 +39,7 @@ class XeniaDataUpdateCoordinator(DataUpdateCoordinator[XeniaCoordinatorData]):
             hass,
             _LOGGER,
             name=config_entry.entry_id,
-            update_interval=timedelta(seconds=30),
+            update_interval=timedelta(seconds=1),
             config_entry=config_entry,
         )
         self.data = XeniaCoordinatorData(
@@ -50,15 +50,8 @@ class XeniaDataUpdateCoordinator(DataUpdateCoordinator[XeniaCoordinatorData]):
     async def _async_update_data(self) -> XeniaCoordinatorData:
         try:
             overview = await self.xenia.get_overview()
-            await asyncio.sleep(0.25)
+            await asyncio.sleep(0.5)
             overview_single = await self.xenia.get_overview_single()
-
-            if overview.ma_status == MachineStatus.BREWING:
-                self.update_interval = timedelta(seconds=1)
-            elif overview.ma_status in [MachineStatus.ON, MachineStatus.DRAINING]:
-                self.update_interval = timedelta(seconds=5)
-            else:
-                self.update_interval = timedelta(seconds=30)
 
             return XeniaCoordinatorData(overview, overview_single)
         except Exception as err:
