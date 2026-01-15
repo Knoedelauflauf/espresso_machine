@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import IntEnum
 import logging
+from typing import Any
 
 from aiohttp import ClientSession
 
@@ -154,7 +155,7 @@ class Xenia:
     async def sb_turn_off(self):
         await self._toggle_sb(False)
 
-    async def _get_overview_raw(self) -> dict[str, any]:
+    async def _get_overview_raw(self) -> dict[str, Any]:
         url = f"http://{self._host}/api/v2/overview"
         async with self._session.get(url, timeout=10) as resp:
             resp.raise_for_status()
