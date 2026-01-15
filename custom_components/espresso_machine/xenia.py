@@ -145,6 +145,9 @@ class Xenia:
     async def machine_turn_off(self):
         await self._control_machine(MachineControl.OFF)
 
+    async def machine_set_eco(self):
+        await self._control_machine(MachineControl.ECO)
+
     async def sb_turn_on(self):
         await self._toggle_sb(True)
 
