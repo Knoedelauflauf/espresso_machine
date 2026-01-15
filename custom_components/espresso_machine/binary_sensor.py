@@ -47,5 +47,5 @@ class XeniaWaterTankSensor(
     @property
     def is_on(self) -> bool:
         # is_on = True means "problem" (tank empty)
-        # Sensor returns 0 when empty, >0 when water present
-        return self.coordinator.data.overview_single.pu_sens_water_tank_level == 0
+        # Xenia returns 2 when empty, 1 when water present
+        return self.coordinator.data.overview_single.pu_sens_water_tank_level == 2
