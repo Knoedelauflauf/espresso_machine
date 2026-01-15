@@ -26,7 +26,7 @@ class PowerOnBehaviorSelect(XeniaEntity, SelectEntity):
     def __init__(self, coordinator, entry) -> None:
         super().__init__(coordinator)
         self._entry_id = entry.entry_id
-        self._attr_name = "Xenia Power on Behavior"
+        self._attr_translation_key = "power_on_behavior"
         self._attr_unique_id = f"{XENIA_DOMAIN}_xenia_power_on_behavior_{self.coordinator.config_entry.data[CONF_HOST]}"
         self._attr_options = POWER_ON_BEHAVIOR_OPTIONS
 

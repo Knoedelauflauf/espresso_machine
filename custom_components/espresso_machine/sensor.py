@@ -46,7 +46,7 @@ class XeniaSensorEntityDescription(
 SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
     XeniaSensorEntityDescription(
         key="brew_group_temperature",
-        name="Brewgroup Temperature",
+        translation_key="brew_group_temperature",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -55,7 +55,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
     ),
     XeniaSensorEntityDescription(
         key="brew_boiler_temperature",
-        name="Brewboiler Temperature",
+        translation_key="brew_boiler_temperature",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -64,7 +64,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
     ),
     XeniaSensorEntityDescription(
         key="pump_pressure",
-        name="Pump Pressure",
+        translation_key="pump_pressure",
         native_unit_of_measurement=UnitOfPressure.BAR,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -73,7 +73,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
     ),
     XeniaSensorEntityDescription(
         key="steam_boiler_pressure",
-        name="Steamboiler Pressure",
+        translation_key="steam_boiler_pressure",
         native_unit_of_measurement=UnitOfPressure.BAR,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -82,6 +82,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
     ),
     XeniaSensorEntityDescription(
         key="electric_current",
+        translation_key="electric_current",
         native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
         device_class=SensorDeviceClass.CURRENT,
         state_class=SensorStateClass.MEASUREMENT,
@@ -90,6 +91,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
     ),
     XeniaSensorEntityDescription(
         key="total_energy",
+        translation_key="total_energy",
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
@@ -98,14 +100,14 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
     ),
     XeniaSensorEntityDescription(
         key="extractions",
-        name="Extractions",
+        translation_key="extractions",
         state_class=SensorStateClass.TOTAL_INCREASING,
         icon="mdi:coffee-to-go",
         value_fn=lambda data: data.overview.ma_extractions,
     ),
     XeniaSensorEntityDescription(
         key="operating_hours",
-        name="Operating Hours",
+        translation_key="operating_hours",
         native_unit_of_measurement=UnitOfTime.HOURS,
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.TOTAL_INCREASING,

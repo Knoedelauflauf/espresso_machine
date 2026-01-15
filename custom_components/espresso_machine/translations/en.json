@@ -1,0 +1,89 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Xenia Espresso Machine",
+        "description": "Enter the hostname or IP address of your Xenia espresso machine",
+        "data": {
+          "host": "Host"
+        }
+      },
+      "reconfigure_confirm": {
+        "title": "Reconfigure Xenia Espresso Machine",
+        "description": "Update the hostname or IP address for {name}",
+        "data": {
+          "host": "Host"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the espresso machine. Please check the host address and ensure the device is powered on and accessible on your network.",
+      "unknown": "An unexpected error occurred"
+    },
+    "abort": {
+      "already_configured": "This espresso machine is already configured",
+      "reconfigure_successful": "Reconfiguration successful"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "brew_group_temperature": {
+        "name": "Brewgroup temperature"
+      },
+      "brew_boiler_temperature": {
+        "name": "Brewboiler temperature"
+      },
+      "pump_pressure": {
+        "name": "Pump pressure"
+      },
+      "steam_boiler_pressure": {
+        "name": "Steamboiler pressure"
+      },
+      "electric_current": {
+        "name": "Electric current"
+      },
+      "total_energy": {
+        "name": "Total energy"
+      },
+      "extractions": {
+        "name": "Extractions"
+      },
+      "operating_hours": {
+        "name": "Operating hours"
+      }
+    },
+    "number": {
+      "brew_group_set_temperature": {
+        "name": "Brewgroup set temperature"
+      },
+      "brew_boiler_set_temperature": {
+        "name": "Brewboiler set temperature"
+      }
+    },
+    "binary_sensor": {
+      "water_tank_empty": {
+        "name": "Water tank empty"
+      }
+    },
+    "switch": {
+      "power": {
+        "name": "Power"
+      },
+      "eco_mode": {
+        "name": "ECO mode"
+      },
+      "steam_boiler_power": {
+        "name": "Steam boiler power"
+      }
+    },
+    "select": {
+      "power_on_behavior": {
+        "name": "Power on behavior",
+        "state": {
+          "steam_on": "Steam boiler on",
+          "steam_off": "Steam boiler off"
+        }
+      }
+    }
+  }
+}

@@ -34,8 +34,6 @@ class XeniaConfigFlow(ConfigFlow, domain=XENIA_DOMAIN):
             return await asyncio.wait_for(xenia.device_connected(), timeout=8)
         except (TimeoutError, ClientError, OSError):
             return False
-        except:
-            return False
 
     def _create_entry(self, title: str) -> ConfigFlowResult:
         assert self._host is not None
@@ -69,7 +67,7 @@ class XeniaConfigFlow(ConfigFlow, domain=XENIA_DOMAIN):
             if ok:
                 return self._create_entry(self._name)
 
-            errors["base"] = "Unable to connect."
+            errors["base"] = "cannot_connect"
 
         return self.async_show_form(
             step_id="user", data_schema=DATA_SCHEMA_USER, errors=errors
@@ -101,7 +99,7 @@ class XeniaConfigFlow(ConfigFlow, domain=XENIA_DOMAIN):
                 self._host = new_host
                 await self._update_entry()
                 return self.async_abort(reason="reconfigure_successful")
-            errors["base"] = "Unable to connect."
+            errors["base"] = "cannot_connect"
 
         return self.async_show_form(
             step_id="reconfigure_confirm",

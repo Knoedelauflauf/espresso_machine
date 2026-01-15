@@ -40,7 +40,7 @@ class XeniaNumberEntityDescription(
 NUMBER_TYPES: Final[tuple[XeniaNumberEntityDescription, ...]] = (
     XeniaNumberEntityDescription(
         key="brew_group_set_temperature",
-        name="Brewgroup Set Temperature",
+        translation_key="brew_group_set_temperature",
         device_class=NumberDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         entity_category=EntityCategory.CONFIG,
@@ -52,7 +52,7 @@ NUMBER_TYPES: Final[tuple[XeniaNumberEntityDescription, ...]] = (
     ),
     XeniaNumberEntityDescription(
         key="brew_boiler_set_temperature",
-        name="Brewboiler Set Temperature",
+        translation_key="brew_boiler_set_temperature",
         device_class=NumberDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         entity_category=EntityCategory.CONFIG,

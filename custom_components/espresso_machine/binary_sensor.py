@@ -22,7 +22,7 @@ async def async_setup_entry(
 class XeniaWaterTankSensor(XeniaEntity, BinarySensorEntity):
     def __init__(self, coordinator: XeniaDataUpdateCoordinator) -> None:
         super().__init__(coordinator)
-        self._attr_name = "Water Tank Empty"
+        self._attr_translation_key = "water_tank_empty"
         self._attr_unique_id = (
             f"{self.coordinator.config_entry.data[CONF_HOST]}_water_tank_empty"
         )
