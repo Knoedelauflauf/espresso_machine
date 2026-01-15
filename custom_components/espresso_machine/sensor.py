@@ -111,7 +111,7 @@ SENSOR_TYPES: Final[tuple[XeniaSensorEntityDescription, ...]] = (
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.TOTAL_INCREASING,
         icon="mdi:clock-outline",
-        value_fn=lambda data: data.overview.ma_operating_hours,
+        value_fn=lambda data: data.overview.ma_operating_hours / 60,
     ),
 )
 
