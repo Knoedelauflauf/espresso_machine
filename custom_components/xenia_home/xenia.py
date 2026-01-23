@@ -55,11 +55,12 @@ class XeniaOverviewData:
     pu_sens_press: float
     pu_level_pw_control: int
     pu_set_level_pw_control: int
+    pu_sens_flow_meter_ml: float
     sb_sens_press: float
     bb_sens_temp_a: float
     bb_level_pw_control: int
     sb_status: SteamBoilerStatus
-    ma_last_extraction_ml: str
+    scale_weight: float
 
     @staticmethod
     def from_dict(data: dict) -> "XeniaOverviewData":
@@ -86,11 +87,12 @@ class XeniaOverviewData:
             pu_sens_press=float(data.get("PU_SENS_PRESS", 0.0)),
             pu_level_pw_control=data.get("PU_LEVEL_PW_CONTROL", 0),
             pu_set_level_pw_control=data.get("PU_SET_LEVEL_PW_CONTROL", 0),
+            pu_sens_flow_meter_ml=float(data.get("PU_SENS_FLOW_METER_ML", 0.0)),
             sb_sens_press=float(data.get("SB_SENS_PRESS", 0.0)),
             bb_sens_temp_a=float(data.get("BB_SENS_TEMP_A", 0.0)),
             bb_level_pw_control=data.get("BB_LEVEL_PW_CONTROL", 0),
             sb_status=sb_status_enum,
-            ma_last_extraction_ml=data.get("MA_LAST_EXTRACTION_ML", "0"),
+            scale_weight=float(data.get("SCALE_WEIGHT", 0.0)),
         )
 
 

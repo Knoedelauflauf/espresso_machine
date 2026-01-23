@@ -84,6 +84,14 @@
           "steam_off": "Steam boiler off"
         }
       }
+    },
+    "event": {
+      "shot_tracker": {
+        "name": "Shot tracker",
+        "state": {
+          "shot_completed": "Shot completed"
+        }
+      }
     }
   }
 }
