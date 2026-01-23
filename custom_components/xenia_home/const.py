@@ -1,6 +1,6 @@
 from enum import Enum
 
-XENIA_DOMAIN = "espresso_machine"
+XENIA_DOMAIN = "xenia_home"
 PLATFORMS = ["binary_sensor", "number", "select", "sensor", "switch"]
 DEFAULT_HOST = "xenia.local"
 
