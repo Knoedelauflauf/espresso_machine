@@ -1,0 +1,98 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Xenia Espressomaschine einrichten",
+        "description": "Gib den Hostnamen oder die IP-Adresse deiner Xenia Espressomaschine ein",
+        "data": {
+          "host": "Host"
+        }
+      },
+      "reconfigure_confirm": {
+        "title": "Xenia Espressomaschine neu konfigurieren",
+        "description": "Aktualisiere den Hostnamen oder die IP-Adresse für {name}",
+        "data": {
+          "host": "Host"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zur Espressomaschine fehlgeschlagen. Bitte überprüfe die Host-Adresse und stelle sicher, dass das Gerät eingeschaltet und im Netzwerk erreichbar ist.",
+      "unsupported_machine_type": "Nicht unterstützter Maschinentyp. Diese Integration unterstützt derzeit nur die DBL.",
+      "unknown": "Ein unerwarteter Fehler ist aufgetreten"
+    },
+    "abort": {
+      "already_configured": "Diese Espressomaschine ist bereits konfiguriert",
+      "reconfigure_successful": "Neukonfiguration erfolgreich"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "brew_group_temperature": {
+        "name": "Brühgruppentemperatur"
+      },
+      "brew_boiler_temperature": {
+        "name": "Brühkesseltemperatur"
+      },
+      "pump_pressure": {
+        "name": "Pumpendruck"
+      },
+      "steam_boiler_pressure": {
+        "name": "Dampfkesseldruck"
+      },
+      "electric_current": {
+        "name": "Stromstärke"
+      },
+      "total_energy": {
+        "name": "Gesamtenergie"
+      },
+      "extractions": {
+        "name": "Bezüge"
+      },
+      "operating_hours": {
+        "name": "Betriebszeit"
+      }
+    },
+    "number": {
+      "brew_group_set_temperature": {
+        "name": "Brühgruppen-Solltemperatur"
+      },
+      "brew_boiler_set_temperature": {
+        "name": "Brühkessel-Solltemperatur"
+      }
+    },
+    "binary_sensor": {
+      "water_tank_empty": {
+        "name": "Wassertank leer"
+      }
+    },
+    "switch": {
+      "power": {
+        "name": "Einschalten"
+      },
+      "eco_mode": {
+        "name": "ECO-Modus"
+      },
+      "steam_boiler_power": {
+        "name": "Dampfkessel"
+      }
+    },
+    "select": {
+      "power_on_behavior": {
+        "name": "Einschaltverhalten",
+        "state": {
+          "steam_on": "Dampfkessel an",
+          "steam_off": "Dampfkessel aus"
+        }
+      }
+    },
+    "event": {
+      "shot_tracker": {
+        "name": "Bezugstracker",
+        "state": {
+          "shot_completed": "Bezug abgeschlossen"
+        }
+      }
+    }
+  }
+}
