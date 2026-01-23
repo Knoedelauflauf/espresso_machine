@@ -59,7 +59,9 @@ class XeniaShotTracker(XeniaEntity, EventEntity):
     _min_shot_seconds = 10
 
     def __init__(
-        self, coordinator: XeniaDataUpdateCoordinator, entry: XeniaConfigEntry
+        self,
+        coordinator: XeniaDataUpdateCoordinator,
+        entry: XeniaConfigEntry,
     ) -> None:
         """Initialize the shot tracker."""
         super().__init__(coordinator)

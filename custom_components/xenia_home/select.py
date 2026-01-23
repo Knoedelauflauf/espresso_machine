@@ -23,7 +23,11 @@ async def async_setup_entry(
 class PowerOnBehaviorSelect(XeniaEntity, SelectEntity):
     _attr_entity_category = EntityCategory.CONFIG
 
-    def __init__(self, coordinator, entry) -> None:
+    def __init__(
+        self,
+        coordinator: XeniaDataUpdateCoordinator,
+        entry: XeniaConfigEntry,
+    ) -> None:
         super().__init__(coordinator)
         self._entry_id = entry.entry_id
         self._attr_translation_key = "power_on_behavior"

@@ -21,19 +21,30 @@ DATA_SCHEMA_USER = vol.Schema(
 
 class XeniaConfigFlow(ConfigFlow, domain=XENIA_DOMAIN):
     VERSION = 1
+    _supported_machine_type = 3
 
     def __init__(self) -> None:
         self._entry: ConfigEntry | None = None
         self._host: str | None = None
         self._name: str | None = None
 
-    async def _async_test_connection(self, hass: HomeAssistant, host: str) -> bool:
+    async def _async_test_connection(
+        self, hass: HomeAssistant, host: str
+    ) -> str | None:
         session = async_get_clientsession(hass)
         xenia = Xenia(host, session)
         try:
-            return await asyncio.wait_for(xenia.device_connected(), timeout=8)
+            if not await asyncio.wait_for(xenia.device_connected(), timeout=8):
+                return "cannot_connect"
+            machine = await asyncio.wait_for(xenia.get_machine(), timeout=8)
+            if (
+                machine.ma_type is not None
+                and machine.ma_type != self._supported_machine_type
+            ):
+                return "unsupported_machine_type"
+            return None
         except (TimeoutError, ClientError, OSError):
-            return False
+            return "cannot_connect"
 
     def _create_entry(self, title: str) -> ConfigFlowResult:
         assert self._host is not None
@@ -63,11 +74,11 @@ class XeniaConfigFlow(ConfigFlow, domain=XENIA_DOMAIN):
 
             await self.async_set_unique_id(self._host)
             self._abort_if_unique_id_configured()
-            ok = await self._async_test_connection(self.hass, self._host)
-            if ok:
+            error = await self._async_test_connection(self.hass, self._host)
+            if error is None:
                 return self._create_entry(self._name)
 
-            errors["base"] = "cannot_connect"
+            errors["base"] = error
 
         return self.async_show_form(
             step_id="user", data_schema=DATA_SCHEMA_USER, errors=errors
@@ -94,12 +105,12 @@ class XeniaConfigFlow(ConfigFlow, domain=XENIA_DOMAIN):
 
         if user_input is not None:
             new_host = user_input[CONF_HOST].strip()
-            ok = await self._async_test_connection(self.hass, new_host)
-            if ok:
+            error = await self._async_test_connection(self.hass, new_host)
+            if error is None:
                 self._host = new_host
                 await self._update_entry()
                 return self.async_abort(reason="reconfigure_successful")
-            errors["base"] = "cannot_connect"
+            errors["base"] = error
 
         return self.async_show_form(
             step_id="reconfigure_confirm",

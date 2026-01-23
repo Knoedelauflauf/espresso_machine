@@ -9,7 +9,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .xenia import Xenia, XeniaOverviewData, XeniaOverviewSingleData
+from .xenia import Xenia, XeniaMachineData, XeniaOverviewData, XeniaOverviewSingleData
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -43,16 +43,17 @@ class XeniaDataUpdateCoordinator(DataUpdateCoordinator[XeniaCoordinatorData]):
             config_entry=config_entry,
         )
         self.data = XeniaCoordinatorData(
-            XeniaOverviewData.from_dict({}), XeniaOverviewSingleData.from_dict({})
+            XeniaOverviewData.from_dict({}),
+            XeniaOverviewSingleData.from_dict({}),
         )
         self.xenia = Xenia(host, session)
+        self.machine_data = XeniaMachineData.from_dict({})
 
     async def _async_update_data(self) -> XeniaCoordinatorData:
         try:
             overview = await self.xenia.get_overview()
             await asyncio.sleep(0.5)
             overview_single = await self.xenia.get_overview_single()
-
             return XeniaCoordinatorData(overview, overview_single)
         except Exception as err:
             raise UpdateFailed(f"Xenia fetch failed: {err}") from err

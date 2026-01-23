@@ -28,7 +28,11 @@ async def async_setup_entry(
 
 
 class XeniaPowerSwitch(XeniaEntity, SwitchEntity):
-    def __init__(self, coordinator, entry) -> None:
+    def __init__(
+        self,
+        coordinator: XeniaDataUpdateCoordinator,
+        entry: XeniaConfigEntry,
+    ) -> None:
         super().__init__(coordinator)
         self._entry_id = entry.entry_id
         self._attr_translation_key = "power"
@@ -60,11 +64,17 @@ class XeniaPowerSwitch(XeniaEntity, SwitchEntity):
 
 
 class XeniaEcoSwitch(XeniaEntity, SwitchEntity):
-    def __init__(self, coordinator, entry) -> None:
+    def __init__(
+        self,
+        coordinator: XeniaDataUpdateCoordinator,
+        entry: XeniaConfigEntry,
+    ) -> None:
         super().__init__(coordinator)
         self._entry_id = entry.entry_id
         self._attr_translation_key = "eco_mode"
-        self._attr_unique_id = f"{XENIA_DOMAIN}_eco_mode_{self.coordinator.config_entry.data[CONF_HOST]}"
+        self._attr_unique_id = (
+            f"{XENIA_DOMAIN}_eco_mode_{self.coordinator.config_entry.data[CONF_HOST]}"
+        )
         self._attr_icon = "mdi:sprout"
 
     @property
@@ -98,7 +108,11 @@ class XeniaEcoSwitch(XeniaEntity, SwitchEntity):
 
 
 class XeniaSteamBoilerSwitch(XeniaEntity, SwitchEntity):
-    def __init__(self, coordinator, entry) -> None:
+    def __init__(
+        self,
+        coordinator: XeniaDataUpdateCoordinator,
+        entry: XeniaConfigEntry,
+    ) -> None:
         super().__init__(coordinator)
         self._entry_id = entry.entry_id
         self._attr_translation_key = "steam_boiler_power"

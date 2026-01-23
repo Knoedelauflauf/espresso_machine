@@ -124,6 +124,44 @@ class XeniaOverviewSingleData:
         )
 
 
+@dataclass
+class XeniaMachineData:
+    ma_type: int | None
+    fw_version_major: int | None
+    fw_version_minor: int | None
+    esp_fw_major: int | None
+    esp_fw_minor: int | None
+
+    @staticmethod
+    def from_dict(data: dict) -> "XeniaMachineData":
+        return XeniaMachineData(
+            ma_type=_safe_int(data.get("MA_TYPE")),
+            fw_version_major=_safe_int(data.get("FW_VERSION_MAJOR")),
+            fw_version_minor=_safe_int(data.get("FW_VERSION_MINOR")),
+            esp_fw_major=_safe_int(data.get("ESP_FW_MAJOR")),
+            esp_fw_minor=_safe_int(data.get("ESP_FW_MINOR")),
+        )
+
+    def fw_version(self) -> str | None:
+        if self.fw_version_major is None or self.fw_version_minor is None:
+            return None
+        return f"{self.fw_version_major}.{self.fw_version_minor}"
+
+    def esp_fw_version(self) -> str | None:
+        if self.esp_fw_major is None or self.esp_fw_minor is None:
+            return None
+        return f"{self.esp_fw_major}.{self.esp_fw_minor}"
+
+
+def _safe_int(value: Any) -> int | None:
+    if value is None:
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
 class Xenia:
     def __init__(self, host: str, session: ClientSession):
         self._host = host
@@ -171,6 +209,12 @@ class Xenia:
         async with self._session.get(url, timeout=10) as resp:
             resp.raise_for_status()
             return XeniaOverviewSingleData.from_dict(await resp.json())
+
+    async def get_machine(self) -> XeniaMachineData:
+        url = f"http://{self._host}/api/v2/machine"
+        async with self._session.get(url, timeout=10) as resp:
+            resp.raise_for_status()
+            return XeniaMachineData.from_dict(await resp.json())
 
     async def _control_machine(self, action: int):
         url = f"http://{self._host}/api/v2/machine/control"
